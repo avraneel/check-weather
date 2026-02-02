@@ -15,6 +15,12 @@ async function getCurrentData(location) {
 
   const weatherData = {};
 
+  const td = new TemperatureData(
+    curr.temp,
+    data.days[0].tempmax,
+    data.days[0].tempmin,
+  );
+
   const astd = new AstronomyData(
     curr.sunrise,
     curr.sunset,
@@ -40,6 +46,7 @@ async function getCurrentData(location) {
   console.log(data.days[0]);
   console.log(ad);
   console.log(astd);
+  console.log(td);
 
   return data;
 }
