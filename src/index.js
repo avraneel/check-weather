@@ -12,6 +12,7 @@ async function getCurrentData(location) {
 
   const data = await fetch(url).then((response) => response.json());
   const curr = data.currentConditions;
+  const days = data.days;
 
   const weatherData = {};
 
@@ -42,6 +43,7 @@ async function getCurrentData(location) {
     curr.co,
   );
   // console.log(weatherData);
+  console.log(days);
   console.log(data.currentConditions);
   console.log(data.days[0]);
   console.log(ad);
