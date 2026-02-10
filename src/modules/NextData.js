@@ -1,7 +1,7 @@
 export class NextDay {
-  constructor(date, desc, temp) {
+  constructor(date, icon, temp) {
     this.date = date;
-    this.desc = desc;
+    this.icon = icon;
     this.temp = temp;
   }
 }
