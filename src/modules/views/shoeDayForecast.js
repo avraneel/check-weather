@@ -13,5 +13,5 @@ function showDayForecast(dayWeather) {
 /**
  * TODO:
  * - Map icon-name to icon
- * - convert datetime to proper format
+ * - convert datetime to proper format (DONE!)
  */
