@@ -6,6 +6,8 @@ import {
   AirQualityData,
 } from "./modules/Data.js";
 import { NextDay } from "./modules/NextData.js";
+import { showThisWeek } from "./modules/views/showThisWeek.js";
+import { nextDay } from "date-fns";
 
 async function getCurrentData(location) {
   const unit = "metric";
@@ -60,6 +62,11 @@ async function getCurrentData(location) {
   console.log(ad);
   console.log(astd);
   console.log(td);
+
+  const maindiv = document.querySelector(".content");
+  console.log(nextdata);
+  const thisweek = showThisWeek(nextdata);
+  maindiv.appendChild(thisweek);
 
   return data;
 }
