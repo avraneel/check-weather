@@ -6,7 +6,8 @@ function showDayForecast(dayWeather) {
   const temp = document.createElement("div");
 
   date.textContent = dayWeather.datetime;
-  date;
+  icon.alt = dayWeather.iconName;
+  temp.textContent = dayWeather.temp;
 }
 
 /**
