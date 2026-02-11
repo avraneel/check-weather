@@ -24,6 +24,7 @@ async function getCurrentData(location) {
   );
 
   const astd = new AstronomyData(
+    data.days[0].datetime,
     curr.sunrise,
     curr.sunset,
     curr.moonphase,

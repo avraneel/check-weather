@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export class TemperatureData {
   constructor(temp, tempmax, tempmin) {
     this.temp = temp;
@@ -14,12 +16,13 @@ export class PrecipitationData {
 }
 
 export class AstronomyData {
-  constructor(sunrise, sunset, moonphase, moonrise, moonset) {
-    this.sunrise = sunrise;
-    this.sunset = sunset;
+  constructor(date, sunrise, sunset, moonphase, moonrise, moonset) {
+    this.date = date;
+    this.sunrise = format(new Date(`${date} ${sunrise}`), "h:mm b");
+    this.sunset = format(new Date(`${date} ${sunset}`), "h:mm b");
     this.moonphase = moonphase;
-    this.moonrise = moonrise;
-    this.moonset = moonset;
+    this.moonrise = format(new Date(`${date} ${moonrise}`), "h:mm b");
+    this.moonset = format(new Date(`${date} ${moonset}`), "h:mm b");
   }
 }
 
