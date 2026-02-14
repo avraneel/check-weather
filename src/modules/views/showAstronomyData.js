@@ -1,3 +1,5 @@
+import { AstronomyData } from "../Data";
+
 export function showAstronomyData(astronomyData) {
   const astronomyContainer = document.createElement("div");
 

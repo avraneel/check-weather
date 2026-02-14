@@ -8,6 +8,8 @@ import {
 import { NextDay } from "./modules/NextData.js";
 import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { nextDay } from "date-fns";
+import { currentDate } from "./modules/data/CurrentDate.js";
+import { showDateHeading } from "./modules/views/showDateHeading.js";
 
 async function getCurrentData(location) {
   const unit = "metric";
@@ -62,11 +64,17 @@ async function getCurrentData(location) {
   console.log(ad);
   console.log(astd);
   console.log(td);
+  const dateHeading = currentDate(
+    `${data.days[0].datetime} ${data.currentConditions.datetime}`,
+  );
+  console.log(dateHeading);
 
   const maindiv = document.querySelector(".content");
   console.log(nextdata);
   const thisweek = showThisWeek(nextdata);
   maindiv.appendChild(thisweek);
+  const currDate = showDateHeading(dateHeading);
+  maindiv.appendChild(currDate);
 
   return data;
 }
