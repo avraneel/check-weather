@@ -1,4 +1,4 @@
-import { AstronomyData } from "../Data";
+import { AstronomyData } from "../data/Data";
 
 export function showAstronomyData(astronomyData) {
   const astronomyContainer = document.createElement("div");
@@ -8,3 +8,5 @@ export function showAstronomyData(astronomyData) {
 
   const astronomyBox = document.createElement("div");
 }
+
+ex

@@ -20,7 +20,6 @@ export class AstronomyData {
     this.date = date;
     this.sunrise = format(new Date(`${date} ${sunrise}`), "h:mm b");
     this.sunset = format(new Date(`${date} ${sunset}`), "h:mm b");
-    this.moonphase = moonphase;
     this.moonrise = format(new Date(`${date} ${moonrise}`), "h:mm b");
     this.moonset = format(new Date(`${date} ${moonset}`), "h:mm b");
   }
