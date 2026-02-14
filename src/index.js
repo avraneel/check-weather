@@ -10,6 +10,8 @@ import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { nextDay } from "date-fns";
 import { currentDate } from "./modules/data/CurrentDate.js";
 import { showDateHeading } from "./modules/views/showDateHeading.js";
+import { showAddress } from "./modules/views/renderAddress.js";
+import "./style.css";
 
 async function getCurrentData(location) {
   const unit = "metric";
@@ -75,7 +77,9 @@ async function getCurrentData(location) {
   maindiv.appendChild(thisweek);
   const currDate = showDateHeading(dateHeading);
   maindiv.appendChild(currDate);
-
+  console.log(data.address);
+  const loc = showAddress(data.address);
+  maindiv.appendChild(loc);
   return data;
 }
 
