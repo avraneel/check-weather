@@ -1,5 +1,5 @@
 /**
- * returns the LHS div element
+ * returns the RHS div element
  */
 export function showCurrentData() {
   const currentData = document.createElement("div");

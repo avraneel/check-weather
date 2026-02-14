@@ -22,3 +22,55 @@
   display: grid;
   grid-template-columns: 4fr 1fr;
 }
+
+.weather-main {
+  display: grid;
+  grid-template-areas:
+    "main-icon location main-temp"
+    "description description description";
+}
+
+.main-icon {
+  grid-area: main-icon;
+}
+
+.location {
+  grid-area: location;
+}
+
+.temp {
+  grid-area: main-temp;
+}
+
+.description {
+  grid-area: description;
+}
+
+.week-weather {
+  text-align: center;
+}
+
+.week-forecast {
+  display: grid;
+  gap: 1rem;
+}
+
+.forecast {
+  border: 1px solid black;
+  font-family: "Figtree";
+  font-size: 28px; /* should remove */
+  padding: 1rem;
+
+  /* important */
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  align-items: center;
+}
+
+.forecase-date {
+  text-align: left;
+}
+
+.forecast-temp {
+  text-align: right;
+}

@@ -4,14 +4,25 @@ import {
   AstronomyData,
   AirQualityData,
 } from "./modules/data/Data.js";
-import { NextDay } from "./modules/data/NextData.js";
 import { showThisWeek } from "./modules/views/showThisWeek.js";
-import { nextDay } from "date-fns";
 import { currentDate } from "./modules/data/CurrentDate.js";
 import { showDateHeading } from "./modules/views/showCurrentDate.js";
 import { showAddress } from "./modules/views/showAddress.js";
 import "./style.css";
 import { renderWeatherMain } from "./modules/views/renderWeatherMain.js";
+import { format } from "date-fns";
+
+function importAll(r) {
+  let images = {};
+  r.keys().map((element, index) => {
+    images[element.replace("./", "")] = r(element);
+  });
+  return images;
+}
+
+export const images = importAll(
+  require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
+);
 
 async function getCurrentData(location) {
   const unit = "metric";
@@ -19,10 +30,10 @@ async function getCurrentData(location) {
 
   const data = await fetch(url).then((response) => response.json());
   const curr = data.currentConditions;
-  const days = data.days;
 
   const weatherMainObject = {
-    icon: data.currentConditions.icon,
+    imgSrc: images[`${data.currentConditions.icon}.svg`],
+    imgAlt: data.currentConditions.icon,
     location: data.resolvedAddress.split(", ")[0],
     country: data.resolvedAddress.split(", ").at(-1),
     temp: data.currentConditions.temp,
@@ -62,8 +73,13 @@ async function getCurrentData(location) {
   const nextdata = [];
 
   for (let i = 1; i < 8; i++) {
-    const nextday = new NextDay(days[i].datetime, days[i].icon, days[i].temp);
-    nextdata.push(nextday);
+    const nextDay = {
+      date: format(new Date(data.days[i].datetime), "E, MMM d"),
+      imgSrc: images[`${data.days[i].icon}.svg`],
+      imgAlt: data.days[i].icon,
+      temp: data.days[i].temp,
+    };
+    nextdata.push(nextDay);
   }
 
   const dateHeading = currentDate(
@@ -82,8 +98,8 @@ async function getCurrentData(location) {
 
   const maindiv = document.querySelector(".content");
   maindiv.append(weatherMain);
-  // const thisweek = showThisWeek(nextdata);
-  // maindiv.appendChild(thisweek);
+  const thisweek = showThisWeek(nextdata);
+  maindiv.appendChild(thisweek);
   // const currDate = showDateHeading(dateHeading);
   // maindiv.appendChild(currDate);
   // console.log(data.address);
@@ -92,4 +108,4 @@ async function getCurrentData(location) {
   return data;
 }
 
-getCurrentData("hokkaido");
+getCurrentData("Kolkata");
