@@ -3,25 +3,24 @@ export function renderWeatherMain(weatherMainObject) {
   weatherMain.classList.toggle("weather-main");
 
   const icon = document.createElement("img");
+  const address = document.createElement("div");
+  const location = document.createElement("span");
+  const country = document.createElement("span");
+  const desc = document.createElement("p");
+  const temp = document.createElement("div");
+
   icon.src = "../../assets/";
   icon.alt = weatherMainObject.icon;
 
-  const address = document.createElement("div");
-
-  const location = document.createElement("span");
   location.textContent = weatherMainObject.location;
 
-  const country = document.createElement("span");
   country.textContent = weatherMainObject.country;
 
-  address.append(location, country);
-
-  const desc = document.createElement("p");
   desc.textContent = weatherMainObject.description;
 
-  const temp = document.createElement("p");
   temp.textContent = weatherMainObject.temp;
 
+  address.append(location, country);
   weatherMain.append(icon, address, temp, desc);
   return weatherMain;
 }
