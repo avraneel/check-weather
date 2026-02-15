@@ -20,3 +20,5 @@ function processThisWeek(data) {
 
   return thisweek;
 }
+
+export function processWind(data) {}

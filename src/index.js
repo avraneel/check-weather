@@ -1,17 +1,17 @@
-import { TemperatureData, PrecipitationData } from "./modules/data/Data.js";
+import { TemperatureData } from "./modules/data/Data.js";
 import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { currentDate } from "./modules/data/CurrentDate.js";
 import { showAstronomyData } from "./modules/views/showAstronomyData.js";
-import { showAddress } from "./modules/views/showAddress.js";
 import "./style.css";
 import { renderCurrentWeather } from "./modules/views/renderWeatherMain.js";
 import { format } from "date-fns";
 import { showTimeLocation } from "./modules/views/showCurrentDate.js";
 import { showAirQuality } from "./modules/views/showAirQuality.js";
 import { showWind } from "./modules/views/showWind.js";
-import { renderDescription } from "./modules/views/renderDescription.js";
 import { renderHumidity } from "./modules/views/renderHumidity.js";
 import { getBeaufortFromMetric } from "./getBeaufort.js";
+import { renderCard } from "./modules/views/renderCard.js";
+import { Card } from "./modules/data/Data.js";
 
 function importAll(r) {
   let images = {};
@@ -21,8 +21,16 @@ function importAll(r) {
   return images;
 }
 
-export const images = importAll(
+export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
+);
+
+export const backgrouds = importAll(
+  require.context(
+    "./assets/images/backgrounds",
+    false,
+    /\.(png|svg|jpg|jpeg|gif)$/i,
+  ),
 );
 
 async function getCurrentData(location) {
@@ -37,19 +45,34 @@ async function getCurrentData(location) {
       `${data.days[0].datetime} ${data.currentConditions.datetime}`,
     ),
     location: data.resolvedAddress,
-    imgSrc: images[`${data.currentConditions.icon}.svg`],
+    imgSrc: icons[`${data.currentConditions.icon}.svg`],
     imgAlt: data.currentConditions.icon,
     country: data.resolvedAddress.split(", ").at(-1),
     temp: `${data.currentConditions.temp} &deg;C`,
     description: data.description,
   };
 
+  const astronomy = new Card("Astronomy");
+
+  astronomy.addItem(
+    "Sunrise",
+    icons["sunrise.svg"],
+    "sunrise",
+    null,
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+      "hh:mm b",
+    ),
+    false,
+    null,
+  );
+
   const astronomyObject = {
     title: "Astronomy",
     items: {
       sunrise: {
         name: "Sunrise",
-        imgSrc: images[`sunrise.svg`],
+        imgSrc: icons[`sunrise.svg`],
         imgAlt: "sunrise",
         value: format(
           new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
@@ -58,7 +81,7 @@ async function getCurrentData(location) {
       },
       sunset: {
         name: "Sunset",
-        imgSrc: images[`sunset.svg`],
+        imgSrc: icons[`sunset.svg`],
         imgAlt: "sunset",
         value: format(
           new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
@@ -67,7 +90,7 @@ async function getCurrentData(location) {
       },
       moonrise: {
         name: "Moonrise",
-        imgSrc: images[`moonrise.svg`],
+        imgSrc: icons[`moonrise.svg`],
         imgAlt: "moonrise",
         value: format(
           new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
@@ -76,7 +99,7 @@ async function getCurrentData(location) {
       },
       moonset: {
         name: "Moonset",
-        imgSrc: images[`moonset.svg`],
+        imgSrc: icons[`moonset.svg`],
         imgAlt: "moonset",
         value: format(
           new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
@@ -158,7 +181,7 @@ async function getCurrentData(location) {
   for (let i = 1; i < 8; i++) {
     const nextDay = {
       date: format(new Date(data.days[i].datetime), "E, MMM d"),
-      imgSrc: images[`${data.days[i].icon}.svg`],
+      imgSrc: icons[`${data.days[i].icon}.svg`],
       imgAlt: data.days[i].icon,
       condition: data.days[i].conditions,
       temp: data.days[i].temp,
@@ -171,21 +194,21 @@ async function getCurrentData(location) {
     items: [
       {
         name: "Relative Humidity",
-        imgSrc: images["humidity.svg"],
+        imgSrc: icons["humidity.svg"],
         imgAlt: "humidity %",
         value: `${data.currentConditions.humidity}`,
         unit: "%",
       },
       {
         name: "Dew Point",
-        imgSrc: images["thermometer-raindrop.svg"],
+        imgSrc: icons["thermometer-raindrop.svg"],
         imgAlt: "dew point%",
         value: `${data.currentConditions.dew}`,
         unit: "&deg;C",
       },
       {
         name: "Pressure",
-        imgSrc: images["barometer.svg"],
+        imgSrc: icons["barometer.svg"],
         imgAlt: "barometer",
         value: data.currentConditions.pressure,
       },
@@ -200,7 +223,7 @@ async function getCurrentData(location) {
   console.log(humidityPressure);
 
   const beaufortSpeed = getBeaufortFromMetric(data.currentConditions.windspeed);
-  console.log(images["wind-beaufort-1.svg"]);
+  console.log(icons["wind-beaufort-1.svg"]);
 
   const wind = {
     title: "Wind",
@@ -212,7 +235,7 @@ async function getCurrentData(location) {
       },
       {
         name: "Beaufort Wind Scale",
-        imgSrc: images[`wind-beaufort-${beaufortSpeed}.svg`],
+        imgSrc: icons[`wind-beaufort-${beaufortSpeed}.svg`],
         imgAlt: `beaufort-${beaufortSpeed}`,
         value: beaufortSpeed,
       },
@@ -259,7 +282,7 @@ async function getCurrentData(location) {
   return data;
 }
 
-getCurrentData("Barrow Island");
+getCurrentData("Bengaluru");
 
 /**
  * TODO:

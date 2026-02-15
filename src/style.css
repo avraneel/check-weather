@@ -22,64 +22,54 @@
   font-family: "Open Sans";
 }
 
+/* body {
+  background-image: url(./assets/images/backgrounds/background-partly-cloudy-night.jpg);
+} */
+
 .content {
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(5, minmax(100px, 1fr));
-  grid-template-rows: repeat(5, minmax(100px, 1fr));
-}
-
-.current-weather {
-  grid-area: 1/1/3/3;
+  gap: 1em;
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-template-areas:
+    "main main search week-weather"
+    "main main tempuv week-weather"
+    "astronomy air-quality humidity week-weather"
+    "astronomy air-quality wind week-weather";
 }
 
 .current-condition {
   display: grid;
-  gap: 10px;
+  gap: 1em;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  font-size: 4em;
-  font-weight: bold;
 }
 
-.description {
-  font-size: 2em;
+.current-weather {
+  grid-area: main;
+}
+
+.tempuv {
+  grid-area: tempuv;
 }
 
 .astronomy {
-  border: 1px solid black;
-  grid-area: 3/1/5/2;
+  grid-area: astronomy;
 }
 
 .air-quality {
-  border: 1px solid black;
-  grid-area: 3/2/5/3;
+  grid-area: air-quality;
 }
 
 .humidity {
-  border: 1px solid black;
-  grid-area: 3/3/4/5;
+  grid-area: humidity;
 }
 
 .wind {
-  border: 1px solid black;
-  grid-area: 4/3/5/5;
-}
-
-.item {
-  display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
-  align-items: center;
-}
-
-.air-quality .item {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-area: wind;
 }
 
 .week-weather {
-  grid-area: 1/5/6/6;
-  text-align: center;
+  grid-area: week-weather;
 }
 
 .week-forecast,
@@ -89,14 +79,21 @@
   gap: 1rem;
 }
 
-.forecast {
+.forecast,
+.item {
   border: 1px solid black;
-  padding: 1rem;
-
-  /* important */
+  padding: 1em;
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
+  gap: 1em;
   align-items: center;
+}
+
+.forecast {
+  grid-template-columns: 3fr 1fr 1fr;
+}
+
+.item {
+  grid-template-columns: 1fr 3fr 1fr;
 }
 
 .forecase-date {

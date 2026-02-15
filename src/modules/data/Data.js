@@ -25,37 +25,27 @@ export class AstronomyData {
   }
 }
 
-export class AirQualityData {
-  constructor(aqi, element, pm1, pm2p5, pm10, so2, no2, o3, co) {
-    this.aqi = aqi;
-    this.element = element;
-    this.pm1 = pm1;
-    this.pm2p5 = pm2p5;
-    this.pm10 = pm10;
-    this.so2 = so2;
-    this.no2 = no2;
-    this.o3 = o3;
-    this.co = co;
-  }
-}
-
 class Item {
-  constructor(name, imgSrc, imgAlt, value, unit) {
+  constructor(name, imgSrc, imgAlt, value, textValue, isImage, unit) {
     this.name = name;
     this.imgSrc = imgSrc;
     this.imgAlt = imgAlt;
     this.value = value;
+    this.textValue = textValue;
+    this.isImage = isImage;
     this.unit = unit;
   }
 }
 
 export class Card {
   constructor(title) {
-    this.title = "Title";
+    this.title = title;
     this.items = [];
   }
 
-  addItem(name, imgSrc, imgAlt, value) {
-    this.itemList.push(new Item(name, imgSrc, imgAlt, value));
+  addItem(name, imgSrc, imgAlt, value, textValue, isImage, unit) {
+    this.items.push(
+      new Item(name, imgSrc, imgAlt, value, textValue, isImage, unit),
+    );
   }
 }
