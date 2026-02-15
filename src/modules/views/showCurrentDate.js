@@ -1,10 +1,14 @@
-import { currentDate } from "../data/CurrentDate";
+export function showTimeLocation(timeLocation) {
+  const timeLocationDiv = document.createElement("div");
+  const fetchTime = document.createElement("div");
+  const location = document.createElement("div");
 
-export function showCurrentDate(dateString) {
-  const currentDateDiv = document.createElement("div");
-  currentDateDiv.classList.toggle("current-date");
+  fetchTime.classList.toggle("fetch-date");
+  location.classList.toggle("location");
 
-  currentDateDiv.textContent = currentDate(dateString);
+  fetchTime.textContent = timeLocation.datetime;
+  location.textContent = timeLocation.location;
 
-  return currentDateDiv;
+  timeLocationDiv.append(fetchTime, location);
+  return timeLocationDiv;
 }

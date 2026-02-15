@@ -1,34 +1,29 @@
-export function renderWeatherMain(weatherMainObject) {
-  const weatherMain = document.createElement("div");
+export function renderCurrentWeather(currentWeatherObject) {
+  const currentWeather = document.createElement("div");
 
-  const weatherMainTop = document.createElement("div");
-  const icon = document.createElement("img");
-  const address = document.createElement("div");
+  const fetchTime = document.createElement("div");
   const location = document.createElement("div");
-  //const country = document.createElement("span");
-  const desc = document.createElement("p");
+  const conditionDiv = document.createElement("div");
+  const icon = document.createElement("img");
   const temp = document.createElement("div");
+  const desc = document.createElement("div");
 
-  weatherMain.classList.toggle("weather-main");
-  //weatherMainTop.classList.toggle("weather-main-top");
-  icon.classList.toggle("main-icon");
+  fetchTime.classList.toggle("fetch-time");
   location.classList.toggle("location");
-  temp.classList.toggle("main-temp");
+  currentWeather.classList.toggle("current-weather");
+  conditionDiv.classList.toggle("current-condition");
+  icon.classList.toggle("current-icon");
+  temp.classList.toggle("current-temp");
   desc.classList.toggle("description");
 
-  icon.src = weatherMainObject.imgSrc;
-  icon.alt = weatherMainObject.imgAlt;
+  fetchTime.textContent = currentWeatherObject.datetime;
+  location.textContent = currentWeatherObject.location;
+  icon.src = currentWeatherObject.imgSrc;
+  icon.alt = currentWeatherObject.imgAlt;
+  temp.innerHTML = currentWeatherObject.temp;
+  desc.textContent = currentWeatherObject.description;
 
-  location.textContent = weatherMainObject.location;
-
-  //country.textContent = weatherMainObject.country;
-
-  desc.textContent = weatherMainObject.description;
-
-  temp.textContent = weatherMainObject.temp;
-
-  //address.append(location, country);
-  // weatherMainTop.append(icon, location, temp);
-  weatherMain.append(icon, location, temp, desc);
-  return weatherMain;
+  conditionDiv.append(icon, temp);
+  currentWeather.append(fetchTime, location, conditionDiv, desc);
+  return currentWeather;
 }

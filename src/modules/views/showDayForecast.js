@@ -18,7 +18,7 @@ export function showDayForecast(dayWeather) {
   date.textContent = dayWeather.date;
   icon.src = dayWeather.imgSrc;
   icon.alt = dayWeather.imgAlt;
-  temp.textContent = dayWeather.temp;
+  temp.innerHTML = dayWeather.temp + "&deg;C";
 
   //iconAndTemp.append(icon, temp);
   //console.log(iconAndTemp); // here also, I am not getting the temp element

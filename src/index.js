@@ -1,16 +1,17 @@
-import {
-  TemperatureData,
-  PrecipitationData,
-  AstronomyData,
-  AirQualityData,
-} from "./modules/data/Data.js";
+import { TemperatureData, PrecipitationData } from "./modules/data/Data.js";
 import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { currentDate } from "./modules/data/CurrentDate.js";
-import { showDateHeading } from "./modules/views/showCurrentDate.js";
+import { showAstronomyData } from "./modules/views/showAstronomyData.js";
 import { showAddress } from "./modules/views/showAddress.js";
 import "./style.css";
-import { renderWeatherMain } from "./modules/views/renderWeatherMain.js";
+import { renderCurrentWeather } from "./modules/views/renderWeatherMain.js";
 import { format } from "date-fns";
+import { showTimeLocation } from "./modules/views/showCurrentDate.js";
+import { showAirQuality } from "./modules/views/showAirQuality.js";
+import { showWind } from "./modules/views/showWind.js";
+import { renderDescription } from "./modules/views/renderDescription.js";
+import { renderHumidity } from "./modules/views/renderHumidity.js";
+import { getBeaufortFromMetric } from "./getBeaufort.js";
 
 function importAll(r) {
   let images = {};
@@ -32,16 +33,62 @@ async function getCurrentData(location) {
   const curr = data.currentConditions;
 
   const weatherMainObject = {
+    datetime: currentDate(
+      `${data.days[0].datetime} ${data.currentConditions.datetime}`,
+    ),
+    location: data.resolvedAddress,
     imgSrc: images[`${data.currentConditions.icon}.svg`],
     imgAlt: data.currentConditions.icon,
-    location: data.resolvedAddress.split(", ")[0],
     country: data.resolvedAddress.split(", ").at(-1),
-    temp: data.currentConditions.temp,
+    temp: `${data.currentConditions.temp} &deg;C`,
     description: data.description,
   };
 
+  const astronomyObject = {
+    title: "Astronomy",
+    items: {
+      sunrise: {
+        name: "Sunrise",
+        imgSrc: images[`sunrise.svg`],
+        imgAlt: "sunrise",
+        value: format(
+          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+          "hh:mm b",
+        ),
+      },
+      sunset: {
+        name: "Sunset",
+        imgSrc: images[`sunset.svg`],
+        imgAlt: "sunset",
+        value: format(
+          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+          "hh:mm b",
+        ),
+      },
+      moonrise: {
+        name: "Moonrise",
+        imgSrc: images[`moonrise.svg`],
+        imgAlt: "moonrise",
+        value: format(
+          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+          "hh:mm b",
+        ),
+      },
+      moonset: {
+        name: "Moonset",
+        imgSrc: images[`moonset.svg`],
+        imgAlt: "moonset",
+        value: format(
+          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+          "hh:mm b",
+        ),
+      },
+    },
+  };
+
+  console.log(astronomyObject);
+
   console.log(weatherMainObject);
-  const weatherMain = renderWeatherMain(weatherMainObject);
 
   const td = new TemperatureData(
     curr.temp,
@@ -49,25 +96,61 @@ async function getCurrentData(location) {
     data.days[0].tempmin,
   );
 
-  const astd = new AstronomyData(
-    data.days[0].datetime,
-    curr.sunrise,
-    curr.sunset,
-    curr.moonphase,
-    data.days[0].moonrise,
-    data.days[0].moonset,
-  );
+  const airQualityData = {
+    title: "Air Quality",
+    items: {
+      aqi: {
+        name: "AQI",
+        value: data.currentConditions.aqius,
+      },
+      pm1: {
+        name: "PM1",
+        value: data.currentConditions.pm1,
+      },
+      pm2p5: {
+        name: "PM2.5",
+        value: data.currentConditions.pm2p5,
+      },
+      pm10: {
+        name: "PM10",
+        value: data.currentConditions.pm10,
+      },
+      so2: {
+        name: "SO2",
+        value: data.currentConditions.so2,
+        unit: "ppb",
+      },
+      no2: {
+        name: "NO2",
+        value: data.currentConditions.no2,
+        unit: "ppb",
+      },
+      o3: {
+        name: "O3",
+        value: data.currentConditions.so2,
+        unit: "ppb",
+      },
+      co: {
+        name: "CO",
+        value: data.currentConditions.co,
+        unit: "ppb",
+      },
+    },
+  };
 
-  const aqd = new AirQualityData(
-    curr.aqius,
-    curr.aqielement,
-    curr.pm1,
-    curr.pm2p5,
-    curr.pm10,
-    curr.so2,
-    curr.no2,
-    curr.o3,
-    curr.co,
+  console.log(airQualityData);
+
+  const timeLocation = {
+    datetime: currentDate(
+      `${data.days[0].datetime} ${data.currentConditions.datetime}`,
+    ),
+    location: data.resolvedAddress,
+  };
+
+  console.log(timeLocation);
+
+  const dateHeading = currentDate(
+    `${data.days[0].datetime} ${data.currentConditions.datetime}`,
   );
 
   const nextdata = [];
@@ -77,14 +160,71 @@ async function getCurrentData(location) {
       date: format(new Date(data.days[i].datetime), "E, MMM d"),
       imgSrc: images[`${data.days[i].icon}.svg`],
       imgAlt: data.days[i].icon,
+      condition: data.days[i].conditions,
       temp: data.days[i].temp,
     };
     nextdata.push(nextDay);
   }
 
-  const dateHeading = currentDate(
-    `${data.days[0].datetime} ${data.currentConditions.datetime}`,
-  );
+  const humidityPressure = {
+    title: "Pressure, Humidity and Clouds",
+    items: [
+      {
+        name: "Relative Humidity",
+        imgSrc: images["humidity.svg"],
+        imgAlt: "humidity %",
+        value: `${data.currentConditions.humidity}`,
+        unit: "%",
+      },
+      {
+        name: "Dew Point",
+        imgSrc: images["thermometer-raindrop.svg"],
+        imgAlt: "dew point%",
+        value: `${data.currentConditions.dew}`,
+        unit: "&deg;C",
+      },
+      {
+        name: "Pressure",
+        imgSrc: images["barometer.svg"],
+        imgAlt: "barometer",
+        value: data.currentConditions.pressure,
+      },
+      {
+        name: "Cloud Cover",
+        value: data.currentConditions.cloudcover,
+        unit: "%",
+      },
+    ],
+  };
+
+  console.log(humidityPressure);
+
+  const beaufortSpeed = getBeaufortFromMetric(data.currentConditions.windspeed);
+  console.log(images["wind-beaufort-1.svg"]);
+
+  const wind = {
+    title: "Wind",
+    items: [
+      {
+        name: "Wind Speed",
+        value: data.currentConditions.windspeed,
+        unit: "mph",
+      },
+      {
+        name: "Beaufort Wind Scale",
+        imgSrc: images[`wind-beaufort-${beaufortSpeed}.svg`],
+        imgAlt: `beaufort-${beaufortSpeed}`,
+        value: beaufortSpeed,
+      },
+      {
+        name: "Wind Direction",
+        value: data.currentConditions.winddir,
+        unit: "&deg;",
+      },
+    ],
+  };
+
+  console.log(wind);
 
   console.log(data);
   console.log(nextdata);
@@ -93,13 +233,24 @@ async function getCurrentData(location) {
   console.log(dateHeading);
   console.log(data.address);
   console.log(td);
-  console.log(astd);
-  console.log(aqd);
 
   const maindiv = document.querySelector(".content");
+  const dhDiv = showTimeLocation(dateHeading);
+  maindiv.append(dhDiv);
+  const weatherMain = renderCurrentWeather(weatherMainObject);
   maindiv.append(weatherMain);
+  // const desc = renderDescription(description);
+  // maindiv.append(desc);
   const thisweek = showThisWeek(nextdata);
   maindiv.appendChild(thisweek);
+  const astronomyCard = showAstronomyData(astronomyObject);
+  maindiv.append(astronomyCard);
+  const airQualityCard = showAirQuality(airQualityData);
+  maindiv.append(airQualityCard);
+  const humidityCard = renderHumidity(humidityPressure);
+  maindiv.append(humidityCard);
+  const windCard = showWind(wind);
+  maindiv.append(windCard);
   // const currDate = showDateHeading(dateHeading);
   // maindiv.appendChild(currDate);
   // console.log(data.address);
@@ -108,4 +259,11 @@ async function getCurrentData(location) {
   return data;
 }
 
-getCurrentData("Kolkata");
+getCurrentData("Barrow Island");
+
+/**
+ * TODO:
+ * - Tooltips
+ * - Add Max and Min Temps
+ * - Fix Cards
+ */

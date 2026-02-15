@@ -38,3 +38,24 @@ export class AirQualityData {
     this.co = co;
   }
 }
+
+class Item {
+  constructor(name, imgSrc, imgAlt, value, unit) {
+    this.name = name;
+    this.imgSrc = imgSrc;
+    this.imgAlt = imgAlt;
+    this.value = value;
+    this.unit = unit;
+  }
+}
+
+export class Card {
+  constructor(title) {
+    this.title = "Title";
+    this.items = [];
+  }
+
+  addItem(name, imgSrc, imgAlt, value) {
+    this.itemList.push(new Item(name, imgSrc, imgAlt, value));
+  }
+}
