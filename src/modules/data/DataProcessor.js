@@ -21,4 +21,66 @@ function processThisWeek(data) {
   return thisweek;
 }
 
-export function processWind(data) {}
+export function processWind(data, unit) {
+  const wind = new Card("Wind");
+
+  wind.addItem(
+    "Wind Speed",
+    icons["windsock.svg"],
+    null,
+    null,
+    data.currentConditions.windspeed,
+    false,
+    unit,
+  );
+}
+
+export function processAstronomy(data) {
+  const astronomy = new Card("Astronomy");
+
+  astronomy.addItem(
+    "Sunrise",
+    icons["sunrise.svg"],
+    "sunrise",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  astronomy.addItem(
+    "Sunset",
+    icons["sunset.svg"],
+    "sunset",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].sunset}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  astronomy.addItem(
+    "Moonrise",
+    icons["moonrise.svg"],
+    "moonrise",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].moonrise}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  astronomy.addItem(
+    "Moonset",
+    icons["moonset.svg"],
+    "moonset",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].moonset}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  return astronomy;
+}

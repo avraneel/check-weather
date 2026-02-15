@@ -26,13 +26,11 @@ export class AstronomyData {
 }
 
 class Item {
-  constructor(name, imgSrc, imgAlt, value, textValue, isImage, unit) {
+  constructor(name, imgSrc, imgAlt, value, unit) {
     this.name = name;
     this.imgSrc = imgSrc;
     this.imgAlt = imgAlt;
     this.value = value;
-    this.textValue = textValue;
-    this.isImage = isImage;
     this.unit = unit;
   }
 }
@@ -43,9 +41,7 @@ export class Card {
     this.items = [];
   }
 
-  addItem(name, imgSrc, imgAlt, value, textValue, isImage, unit) {
-    this.items.push(
-      new Item(name, imgSrc, imgAlt, value, textValue, isImage, unit),
-    );
+  addItem(name, imgSrc, imgAlt, value, unit) {
+    this.items.push(new Item(name, imgSrc, imgAlt, value, unit));
   }
 }

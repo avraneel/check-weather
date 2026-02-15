@@ -1,7 +1,5 @@
-import { TemperatureData } from "./modules/data/Data.js";
 import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { currentDate } from "./modules/data/CurrentDate.js";
-import { showAstronomyData } from "./modules/views/showAstronomyData.js";
 import "./style.css";
 import { renderCurrentWeather } from "./modules/views/renderWeatherMain.js";
 import { format } from "date-fns";
@@ -52,72 +50,84 @@ async function getCurrentData(location) {
     description: data.description,
   };
 
+  const tempuv = new Card("Temperature & UV");
+
+  tempuv.addItem(
+    "Max",
+    icons["thermometer-high.svg"],
+    "tempmax",
+    data.days[0].tempmax,
+    "&deg;C",
+  );
+  tempuv.addItem(
+    "Min",
+    icons["thermometer-low.svg"],
+    "tempmin",
+    data.days[0].tempmin,
+    "&deg;C",
+  );
+  tempuv.addItem(
+    "UV Index",
+    icons["uv-index.svg"],
+    "tempmin",
+    data.currentConditions.uvindex,
+    null,
+  );
+
+  const tempElement = renderCard(tempuv, "tempuv");
+
   const astronomy = new Card("Astronomy");
 
   astronomy.addItem(
     "Sunrise",
     icons["sunrise.svg"],
     "sunrise",
-    null,
     format(
       new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
       "hh:mm b",
     ),
-    false,
     null,
   );
 
-  const astronomyObject = {
-    title: "Astronomy",
-    items: {
-      sunrise: {
-        name: "Sunrise",
-        imgSrc: icons[`sunrise.svg`],
-        imgAlt: "sunrise",
-        value: format(
-          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
-          "hh:mm b",
-        ),
-      },
-      sunset: {
-        name: "Sunset",
-        imgSrc: icons[`sunset.svg`],
-        imgAlt: "sunset",
-        value: format(
-          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
-          "hh:mm b",
-        ),
-      },
-      moonrise: {
-        name: "Moonrise",
-        imgSrc: icons[`moonrise.svg`],
-        imgAlt: "moonrise",
-        value: format(
-          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
-          "hh:mm b",
-        ),
-      },
-      moonset: {
-        name: "Moonset",
-        imgSrc: icons[`moonset.svg`],
-        imgAlt: "moonset",
-        value: format(
-          new Date(`${data.days[0].datetime} ${data.days[0].sunrise}`),
-          "hh:mm b",
-        ),
-      },
-    },
-  };
+  astronomy.addItem(
+    "Sunset",
+    icons["sunset.svg"],
+    "sunset",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].sunset}`),
+      "hh:mm b",
+    ),
+    null,
+  );
 
-  console.log(astronomyObject);
+  astronomy.addItem(
+    "Moonrise",
+    icons["moonrise.svg"],
+    "moonrise",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].moonrise}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  astronomy.addItem(
+    "Moonset",
+    icons["moonset.svg"],
+    "moonset",
+    format(
+      new Date(`${data.days[0].datetime} ${data.days[0].moonset}`),
+      "hh:mm b",
+    ),
+    null,
+  );
+
+  console.log(astronomy);
+
+  const astronomyElement = renderCard(astronomy, "astronomy");
+  console.log(astronomyElement);
 
   console.log(weatherMainObject);
-
-  const td = new TemperatureData(
-    curr.temp,
-    data.days[0].tempmax,
-    data.days[0].tempmin,
-  );
 
   const airQualityData = {
     title: "Air Quality",
@@ -189,65 +199,61 @@ async function getCurrentData(location) {
     nextdata.push(nextDay);
   }
 
-  const humidityPressure = {
-    title: "Pressure, Humidity and Clouds",
-    items: [
-      {
-        name: "Relative Humidity",
-        imgSrc: icons["humidity.svg"],
-        imgAlt: "humidity %",
-        value: `${data.currentConditions.humidity}`,
-        unit: "%",
-      },
-      {
-        name: "Dew Point",
-        imgSrc: icons["thermometer-raindrop.svg"],
-        imgAlt: "dew point%",
-        value: `${data.currentConditions.dew}`,
-        unit: "&deg;C",
-      },
-      {
-        name: "Pressure",
-        imgSrc: icons["barometer.svg"],
-        imgAlt: "barometer",
-        value: data.currentConditions.pressure,
-      },
-      {
-        name: "Cloud Cover",
-        value: data.currentConditions.cloudcover,
-        unit: "%",
-      },
-    ],
-  };
+  const humidity = new Card("Humidity and Pressure");
 
-  console.log(humidityPressure);
+  humidity.addItem(
+    "Relative Humidity",
+    icons["humidity.svg"],
+    "relative-humidity",
+    data.currentConditions.humidity,
+    "%",
+  );
 
-  const beaufortSpeed = getBeaufortFromMetric(data.currentConditions.windspeed);
-  console.log(icons["wind-beaufort-1.svg"]);
+  humidity.addItem(
+    "Dew Point",
+    icons["dew-point.svg"],
+    "dew-point",
+    data.currentConditions.dew,
+    "%",
+  );
 
-  const wind = {
-    title: "Wind",
-    items: [
-      {
-        name: "Wind Speed",
-        value: data.currentConditions.windspeed,
-        unit: "mph",
-      },
-      {
-        name: "Beaufort Wind Scale",
-        imgSrc: icons[`wind-beaufort-${beaufortSpeed}.svg`],
-        imgAlt: `beaufort-${beaufortSpeed}`,
-        value: beaufortSpeed,
-      },
-      {
-        name: "Wind Direction",
-        value: data.currentConditions.winddir,
-        unit: "&deg;",
-      },
-    ],
-  };
+  humidity.addItem(
+    "Pressure",
+    icons["barometer.svg"],
+    "pressure",
+    data.currentConditions.pressure,
+    "mba",
+  );
 
-  console.log(wind);
+  humidity.addItem(
+    "Cloud Cover",
+    icons["cloud-cover.svg"],
+    "cloud-cover",
+    data.currentConditions.cloudcover,
+    "%",
+  );
+
+  const humidityElement = renderCard(humidity, "humidity");
+
+  const wind = new Card("Wind");
+
+  wind.addItem(
+    "Wind Speed",
+    icons["windsock.svg"],
+    "wind-speed",
+    data.currentConditions.windspeed,
+    "km/h",
+  );
+
+  wind.addItem(
+    "Wind Direction",
+    icons["wind-direction.svg"],
+    "wind-direction",
+    data.currentConditions.winddir,
+    "&deg;",
+  );
+
+  const windElement = renderCard(wind, "wind");
 
   console.log(data);
   console.log(nextdata);
@@ -255,25 +261,20 @@ async function getCurrentData(location) {
   console.log(data.days[0]);
   console.log(dateHeading);
   console.log(data.address);
-  console.log(td);
 
   const maindiv = document.querySelector(".content");
   const dhDiv = showTimeLocation(dateHeading);
   maindiv.append(dhDiv);
   const weatherMain = renderCurrentWeather(weatherMainObject);
   maindiv.append(weatherMain);
-  // const desc = renderDescription(description);
-  // maindiv.append(desc);
+  maindiv.append(tempElement);
   const thisweek = showThisWeek(nextdata);
   maindiv.appendChild(thisweek);
-  const astronomyCard = showAstronomyData(astronomyObject);
-  maindiv.append(astronomyCard);
+  maindiv.append(astronomyElement);
   const airQualityCard = showAirQuality(airQualityData);
   maindiv.append(airQualityCard);
-  const humidityCard = renderHumidity(humidityPressure);
-  maindiv.append(humidityCard);
-  const windCard = showWind(wind);
-  maindiv.append(windCard);
+  maindiv.append(humidityElement);
+  maindiv.append(windElement);
   // const currDate = showDateHeading(dateHeading);
   // maindiv.appendChild(currDate);
   // console.log(data.address);

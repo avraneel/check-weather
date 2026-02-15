@@ -88,12 +88,17 @@
   align-items: center;
 }
 
+.forecast,
+.item img {
+  width: 50 %;
+}
+
 .forecast {
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .item {
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .forecase-date {

@@ -21,13 +21,10 @@ export function renderCard(data, type) {
     icon.src = item.imgSrc;
     icon.alt = item.imgAlt;
 
-    if (item.isImage) {
-      const img = document.createElement("img");
-      img.src = item.value;
-      img.alt = item.textValue;
-      value.append(img);
+    if (item.unit === null) {
+      value.innerHTML = `${item.value}`;
     } else {
-      value.innerHTML = `${item.textValue} ${item.unit}`;
+      value.innerHTML = `${item.value} ${item.unit}`;
     }
 
     cardItem.append(icon, name, value);
