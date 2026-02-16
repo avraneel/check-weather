@@ -28,11 +28,9 @@ export function processWind(data, unit) {
   wind.addItem(
     "Wind Speed",
     icons["windsock.svg"],
-    null,
-    null,
+    "wind-speed",
     data.currentConditions.windspeed,
-    false,
-    unit,
+    "km/h",
   );
 
   wind.addItem(

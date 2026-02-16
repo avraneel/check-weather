@@ -10,7 +10,7 @@ export function renderCurrentWeather(currentWeatherObject) {
 
   fetchTime.classList.toggle("fetch-time");
   location.classList.toggle("location");
-  currentWeather.classList.toggle("current-weather");
+  currentWeather.classList.toggle("main");
   conditionDiv.classList.toggle("current-condition");
   icon.classList.toggle("current-icon");
   temp.classList.toggle("current-temp");

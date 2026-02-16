@@ -3,7 +3,7 @@ import { showDayForecast } from "./showDayForecast";
 export function showThisWeek(weekData) {
   const weekWeather = document.createElement("div");
   weekWeather.classList.add("card", "week-weather");
-  const h3 = document.createElement("h3");
+  const h3 = document.createElement("h2");
   h3.textContent = "This Week";
   weekWeather.appendChild(h3);
 

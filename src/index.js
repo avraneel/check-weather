@@ -26,13 +26,20 @@ export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
 );
 
-export const backgrounds = importAll(
-  require.context(
-    "./assets/images/backgrounds",
-    false,
-    /\.(png|svg|jpg|jpeg|gif)$/i,
-  ),
-);
+// export const backgrounds = importAll(
+//   require.context(
+//     "./assets/images/backgrounds",
+//     false,
+//     /\.(png|svg|jpg|jpeg|gif)$/i,
+//   ),
+// );
+
+const searchBtn = document.querySelector(".search-btn");
+const modal = document.querySelector(".modal");
+
+searchBtn.addEventListener("click", () => {
+  modal.showModal();
+});
 
 async function getCurrentData(location) {
   const unit = "metric";
@@ -49,7 +56,7 @@ async function getCurrentData(location) {
     imgAlt: data.currentConditions.icon,
     country: data.resolvedAddress.split(", ").at(-1),
     temp: `${data.currentConditions.temp} &deg;C`,
-    description: data.description,
+    description: `${data.currentConditions.conditions}. ${data.description}`,
   };
 
   const tempuv = processTemp(data, "&deg;C");
@@ -100,8 +107,7 @@ async function getCurrentData(location) {
   console.log(nextdata);
   console.log(data.currentConditions);
   console.log(data.days[0]);
-  console.log(dateHeading);
-  renderBackground("cloudy-day");
+  renderBackground(data.currentConditions.icon);
 
   const maindiv = document.querySelector(".content");
   const dhDiv = showTimeLocation(dateHeading);
@@ -114,6 +120,12 @@ async function getCurrentData(location) {
   maindiv.append(astronomyElement);
   maindiv.append(humidityElement);
   maindiv.append(windElement);
+
+  // Check if night or day
+  const currDate = new Date(
+    `${data.days[0].datetime} ${data.currentConditions.datetime}`,
+  );
+  console.log(currDate);
   // const currDate = showDateHeading(dateHeading);
   // maindiv.appendChild(currDate);
   // console.log(data.address);

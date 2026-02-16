@@ -1,6 +1,6 @@
 export function renderCard(data, type) {
   const card = document.createElement("div");
-  const heading = document.createElement("h3");
+  const heading = document.createElement("h2");
   const itemList = document.createElement("div");
 
   card.classList.add("card", type);
