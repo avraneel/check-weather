@@ -19,7 +19,7 @@ export function renderBackground(background) {
       body.style.background = "linear-gradient(to bottom, #010b25, #021b36";
       break;
     case "clear-day":
-      body.style.background = "linear-gradient(to bottom, #1182ce, #149bbd)";
+      body.style.background = "linear-gradient(to bottom, #2a79c2, #1f99b8)";
   }
 
   body.style.backgroundRepeat = "no-repeat";

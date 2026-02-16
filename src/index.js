@@ -134,7 +134,7 @@ async function getCurrentData(location) {
   return data;
 }
 
-getCurrentData("Bengaluru");
+getCurrentData("Greece");
 
 /**
  * TODO:
