@@ -33,8 +33,7 @@
   grid-template-areas:
     "main main search week-weather"
     "main main tempuv week-weather"
-    "astronomy air-quality humidity week-weather"
-    "astronomy air-quality wind week-weather";
+    "astronomy wind humidity week-weather";
 }
 
 .current-condition {
@@ -56,10 +55,6 @@
   grid-area: astronomy;
 }
 
-.air-quality {
-  grid-area: air-quality;
-}
-
 .humidity {
   grid-area: humidity;
 }
@@ -76,28 +71,28 @@
 .astronomy-items,
 .humidity-items {
   display: grid;
-  gap: 1rem;
 }
 
 .forecast,
 .item {
   border: 1px solid black;
-  padding: 1em;
   display: grid;
-  gap: 1em;
+  gap: 1rem;
   align-items: center;
 }
 
 .forecast,
 .item img {
-  width: 50 %;
+  width: 50%;
 }
 
 .forecast {
+  padding: 1em;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
 .item {
+  padding: 0.5em;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
