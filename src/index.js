@@ -12,6 +12,7 @@ import {
   processTemp,
   processWind,
 } from "./modules/data/DataProcessor.js";
+import { renderBackground } from "./modules/views/renderBackground.js";
 
 function importAll(r) {
   let images = {};
@@ -25,7 +26,7 @@ export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
 );
 
-export const backgrouds = importAll(
+export const backgrounds = importAll(
   require.context(
     "./assets/images/backgrounds",
     false,
@@ -100,7 +101,7 @@ async function getCurrentData(location) {
   console.log(data.currentConditions);
   console.log(data.days[0]);
   console.log(dateHeading);
-  console.log(data.address);
+  renderBackground("cloudy-day");
 
   const maindiv = document.querySelector(".content");
   const dhDiv = showTimeLocation(dateHeading);

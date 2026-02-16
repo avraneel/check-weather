@@ -18,6 +18,10 @@
   font-display: swap;
 }
 
+body {
+  margin: 1rem;
+}
+
 * {
   font-family: "Open Sans";
 }
@@ -41,6 +45,13 @@
   gap: 1em;
   grid-template-columns: 1fr 1fr;
   align-items: center;
+}
+
+.card {
+  padding: 1rem;
+  border: 2px solid #f5f5f5;
+  border-radius: 1rem;
+  background: rgba(245, 245, 245, 0.15);
 }
 
 .current-weather {
@@ -75,7 +86,6 @@
 
 .forecast,
 .item {
-  border: 1px solid black;
   display: grid;
   gap: 1rem;
   align-items: center;
