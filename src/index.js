@@ -37,6 +37,12 @@ export const icons = importAll(
 const searchBtn = document.querySelector(".search-btn");
 const modal = document.querySelector(".modal");
 
+const img = document.createElement("img");
+img.src = icons["map-search.svg"];
+img.alt = "search";
+
+searchBtn.append(img);
+
 searchBtn.addEventListener("click", () => {
   modal.showModal();
 });
