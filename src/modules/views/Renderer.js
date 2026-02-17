@@ -1,8 +1,7 @@
 export function renderCardElement(data, type) {
   const card = document.createElement("div");
-  const headingElement = renderHeadingElement(data, "h2");
-
-  const itemListElement = renderItemListElement(data, type);
+  const headingElement = renderTextElement(data.title, "h2");
+  const itemListElement = renderItemListElement(data.itemList, type);
 
   card.classList.add("card", type);
 
@@ -10,11 +9,40 @@ export function renderCardElement(data, type) {
   return card;
 }
 
-function renderItemListElement(data, infoType) {
-  const itemListElement = document.createElement("div");
-  itemListElement.classList.toggle(`${infoType}-items`);
+export function renderMainElement(imgSrc, imgAlt, temperature) {
+  const mainElement = document.createElement("div");
+  const iconElement = renderIconElement(imgSrc, imgAlt);
+  const tempElement = renderTextElement(temperature, "div");
 
-  for (const item of data.items) {
+  mainElement.classList.add("card", "main");
+
+  mainElement.append(iconElement, tempElement);
+  return mainElement;
+}
+
+export function renderDateLocationElement(date, location) {
+  const dateLocationElement = document.createElement("div");
+  const dateElement = renderTextElement(date, "div");
+  const locationElement = renderTextElement(location, "div");
+
+  dateLocationElement.classList.add("date-location");
+  dateLocationElement.append(dateElement, locationElement);
+
+  return dateLocationElement;
+}
+
+export function renderDescElement(description) {
+  const descElement = renderTextElement(description, "div");
+  descElement.classList.add("description");
+
+  return descElement;
+}
+
+function renderItemListElement(itemList, infoType) {
+  const itemListElement = document.createElement("div");
+  itemListElement.classList.add(`${infoType}-items`);
+
+  for (const item of itemList) {
     const itemElement = renderItemElement(item);
     itemListElement.append(itemElement);
   }
@@ -24,36 +52,27 @@ function renderItemListElement(data, infoType) {
 
 function renderItemElement(item) {
   const itemElement = document.createElement("div");
-  const name = document.createElement("div");
-  const iconElement = renderItemIconElement(item.imgSrc, item.imgAlt);
+  const itemNameElement = renderTextElement(item.name, "div");
+  const iconElement = renderIconElement(item.iconName, item.alt);
   const valueElement = renderItemValueElement(item.value, item.unit);
 
-  itemElement.classList.toggle("item");
+  itemElement.classList.add("item");
 
-  name.textContent = item.name;
-
-  itemElement.append(iconElement, name, valueElement);
+  itemElement.append(iconElement, itemNameElement, valueElement);
   return itemElement;
 }
 
-function renderHeadingElement(data, headingType) {
-  const headingElement = document.createElement(headingType);
-  headingElement.textContent = data.title;
-
-  return headingElement;
-}
-
-function renderItemIconElement(iconSrc, iconAltText) {
+function renderIconElement(imgSrc, imgAlt) {
   const iconElement = document.createElement("img");
-  iconElement.src = iconSrc;
-  iconElement.alt = iconAltText;
+  iconElement.src = imgSrc;
+  iconElement.alt = imgAlt;
 
   return iconElement;
 }
 
 function renderItemValueElement(value, unit) {
   const valueElement = document.createElement("div");
-  valueElement.classList.toggle("value");
+  valueElement.classList.add("value");
 
   // innerHTML is used as the textContent cannot pass the unit symbol
   if (unit === null) {
@@ -63,4 +82,11 @@ function renderItemValueElement(value, unit) {
   }
 
   return valueElement;
+}
+
+function renderTextElement(text, elementTag) {
+  const textElement = document.createElement(elementTag);
+  textElement.textContent = text;
+
+  return textElement;
 }

@@ -1,20 +1,20 @@
-class Item {
-  constructor(name, imgSrc, imgAlt, value, unit) {
-    this.name = name;
-    this.imgSrc = imgSrc;
-    this.imgAlt = imgAlt;
-    this.value = value;
-    this.unit = unit;
-  }
-}
-
 export class Card {
   constructor(title) {
     this.title = title;
-    this.items = [];
+    this.itemList = [];
   }
 
-  addItem(name, imgSrc, imgAlt, value, unit) {
-    this.items.push(new Item(name, imgSrc, imgAlt, value, unit));
+  addItem(name, iconName, alt, value, unit) {
+    this.itemList.push(new Item(name, iconName, alt, value, unit));
+  }
+}
+
+class Item {
+  constructor(name, iconName, alt, value, unit) {
+    this.name = name;
+    this.iconName = iconName;
+    this.alt = alt;
+    this.value = value;
+    this.unit = unit;
   }
 }

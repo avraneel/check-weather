@@ -1,12 +1,15 @@
 import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { currentDate } from "./modules/data/CurrentDate.js";
 import "./style.css";
-import { renderCurrentWeather } from "./modules/views/renderWeatherMain.js";
 import { format } from "date-fns";
-import { showTimeLocation } from "./modules/views/showCurrentDate.js";
-import { renderCardElement } from "./modules/views/Renderer.js";
-import { Card } from "./modules/data/Data.js";
 import {
+  renderCardElement,
+  renderDateLocationElement,
+  renderDescElement,
+  renderMainElement,
+} from "./modules/views/Renderer.js";
+import {
+  getWeatherDescription,
   processAstronomy,
   processHumidity,
   processTemp,
@@ -113,10 +116,19 @@ async function getCurrentData() {
   renderBackground(data.currentConditions.icon);
 
   const maindiv = document.querySelector(".content");
-  const dhDiv = showTimeLocation(dateHeading);
+  console.log(timeLocation);
+  const dhDiv = renderDateLocationElement(
+    timeLocation.datetime,
+    timeLocation.location,
+  );
   maindiv.append(dhDiv);
-  const weatherMain = renderCurrentWeather(weatherMainObject);
-  maindiv.append(weatherMain);
+  const mainElement = renderMainElement(
+    weatherMainObject.imgSrc,
+    weatherMainObject.imgAlt,
+    weatherMainObject.temp,
+  );
+  // const weatherMain = renderCurrentWeather(weatherMainObject);
+  maindiv.append(mainElement);
   maindiv.append(tempElement);
   const thisweek = showThisWeek(nextdata);
   maindiv.appendChild(thisweek);
@@ -129,6 +141,10 @@ async function getCurrentData() {
     `${data.days[0].datetime} ${data.currentConditions.datetime}`,
   );
   console.log(currDate);
+
+  const weatherDescription = getWeatherDescription(data);
+  const wdElement = renderDescElement(weatherDescription);
+  maindiv.append(wdElement);
   // const currDate = showDateHeading(dateHeading);
   // maindiv.appendChild(currDate);
   // console.log(data.address);

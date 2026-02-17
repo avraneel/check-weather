@@ -1,6 +1,10 @@
 import { format } from "date-fns";
 import { Card } from "./Data";
-import { icons } from "../..";
+import { icons } from "../../index.js";
+
+export function getWeatherDescription(data) {
+  return `${data.currentConditions.conditions}. ${data.description}`;
+}
 
 function processThisWeek(data) {
   const thisweek = [];

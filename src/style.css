@@ -35,8 +35,9 @@ body {
   gap: 1em;
   grid-template-columns: repeat(4, minmax(200px, 1fr));
   grid-template-areas:
-    "main main search week-weather"
+    "date-location search x week-weather"
     "main main tempuv week-weather"
+    "description description tempuv week-weather"
     "astronomy wind humidity week-weather";
 }
 
@@ -74,8 +75,7 @@ body {
   text-shadow: #000000 0px 0px 8px;
 }
 
-.fetch-time,
-.location {
+.date-location {
   color: #f5f5f5;
   text-shadow: #000000 0px 0px 8px;
 }
@@ -100,6 +100,10 @@ h2 {
 .current-condition div {
   color: #f5f5f5;
   font-size: 4rem;
+}
+
+.description {
+  grid-area: description;
 }
 
 .search {
