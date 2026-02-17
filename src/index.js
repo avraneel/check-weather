@@ -4,7 +4,7 @@ import "./style.css";
 import { renderCurrentWeather } from "./modules/views/renderWeatherMain.js";
 import { format } from "date-fns";
 import { showTimeLocation } from "./modules/views/showCurrentDate.js";
-import { renderCard } from "./modules/views/renderCard.js";
+import { renderCardElement } from "./modules/views/Renderer.js";
 import { Card } from "./modules/data/Data.js";
 import {
   processAstronomy,
@@ -13,6 +13,7 @@ import {
   processWind,
 } from "./modules/data/DataProcessor.js";
 import { renderBackground } from "./modules/views/renderBackground.js";
+import { fetchData } from "./modules/data/DataFetch.js";
 
 function importAll(r) {
   let images = {};
@@ -25,14 +26,6 @@ function importAll(r) {
 export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
 );
-
-// export const backgrounds = importAll(
-//   require.context(
-//     "./assets/images/backgrounds",
-//     false,
-//     /\.(png|svg|jpg|jpeg|gif)$/i,
-//   ),
-// );
 
 const searchBtn = document.querySelector(".search-btn");
 const modal = document.querySelector(".modal");
@@ -47,11 +40,15 @@ searchBtn.addEventListener("click", () => {
   modal.showModal();
 });
 
-async function getCurrentData(location) {
-  const unit = "metric";
-  const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&elements=add%3Aaqielement%2Cadd%3Aaqieur%2Cadd%3Aaqius%2Cadd%3Aco%2Cadd%3Amoonrise%2Cadd%3Amoonset%2Cadd%3Ano2%2Cadd%3Ao3%2Cadd%3Apm1%2Cadd%3Apm10%2Cadd%3Apm2p5%2Cadd%3Aso2%2Cremove%3AdatetimeEpoch%2Cremove%3Asolarenergy%2Cremove%3Awindgust&key=3SBV58YFMG5PWJYHX7M2NQ396&contentType=json`;
+async function getCurrentData() {
+  const data = await fetchData("Bangalore", "metric");
 
-  const data = await fetch(url).then((response) => response.json());
+  console.log(data);
+
+  // const unit = "metric";
+  // const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&elements=add%3Aaqielement%2Cadd%3Aaqieur%2Cadd%3Aaqius%2Cadd%3Aco%2Cadd%3Amoonrise%2Cadd%3Amoonset%2Cadd%3Ano2%2Cadd%3Ao3%2Cadd%3Apm1%2Cadd%3Apm10%2Cadd%3Apm2p5%2Cadd%3Aso2%2Cremove%3AdatetimeEpoch%2Cremove%3Asolarenergy%2Cremove%3Awindgust&key=3SBV58YFMG5PWJYHX7M2NQ396&contentType=json`;
+
+  // const data = await fetch(url).then((response) => response.json());
 
   const weatherMainObject = {
     datetime: currentDate(
@@ -67,11 +64,11 @@ async function getCurrentData(location) {
 
   const tempuv = processTemp(data, "&deg;C");
 
-  const tempElement = renderCard(tempuv, "tempuv");
+  const tempElement = renderCardElement(tempuv, "tempuv");
 
   const astronomy = processAstronomy(data);
 
-  const astronomyElement = renderCard(astronomy, "astronomy");
+  const astronomyElement = renderCardElement(astronomy, "astronomy");
   console.log(astronomyElement);
 
   console.log(weatherMainObject);
@@ -104,11 +101,11 @@ async function getCurrentData(location) {
 
   const humidity = processHumidity(data);
 
-  const humidityElement = renderCard(humidity, "humidity");
+  const humidityElement = renderCardElement(humidity, "humidity");
 
   const wind = processWind(data, "km/h");
 
-  const windElement = renderCard(wind, "wind");
+  const windElement = renderCardElement(wind, "wind");
 
   console.log(nextdata);
   console.log(data.currentConditions);
@@ -137,14 +134,12 @@ async function getCurrentData(location) {
   // console.log(data.address);
   // const loc = showAddress(data.address);
   // maindiv.appendChild(loc);
-  return data;
 }
 
-getCurrentData("Greece");
+getCurrentData();
 
 /**
  * TODO:
  * - Tooltips
- * - Add Max and Min Temps
  * - Fix Cards
  */

@@ -2,10 +2,6 @@ import { format } from "date-fns";
 import { Card } from "./Data";
 import { icons } from "../..";
 
-function processAQData(data) {
-  const aqData = new Card("Air Quality");
-}
-
 function processThisWeek(data) {
   const thisweek = [];
 
