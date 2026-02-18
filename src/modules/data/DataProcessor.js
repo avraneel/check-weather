@@ -2,27 +2,47 @@ import { format } from "date-fns";
 import { Card } from "./Data";
 import { icons } from "../../index.js";
 
-export function getWeatherDescription(data) {
-  return `${data.currentConditions.conditions}. ${data.description}`;
+function currentDate(datetime) {
+  return format(new Date(datetime), "d MMMM, h:mm aa");
 }
 
-function processThisWeek(data, numberDays) {
-  const thisweek = [];
+export function getBg(data) {
+  return data.currentConditions.icon;
+}
+
+export function getMain(data, tempunit) {
+  const main = {
+    datetime: currentDate(
+      `${data.days[0].datetime} ${data.currentConditions.datetime}`,
+    ),
+    location: data.resolvedAddress,
+    imgSrc: icons[`${data.currentConditions.icon}.svg`],
+    imgAlt: data.currentConditions.icon,
+    temp: `${data.currentConditions.temp}`,
+    unit: tempunit,
+    desc: `${data.currentConditions.conditions}. ${data.description}`,
+  };
+
+  return main;
+}
+
+export function getForecast(data, unit, numberDays) {
+  const forecast = new Card("Upcoming");
 
   for (let i = 1; i < numberDays; i++) {
-    const nextDay = {
-      date: format(new Date(data.days[i].datetime), "E, MMM d"),
-      imgSrc: images[`${data.days[i].icon}.svg`],
-      imgAlt: data.days[i].icon,
-      temp: data.days[i].temp,
-    };
-    thisweek.push(nextDay);
+    forecast.addItem(
+      format(new Date(data.days[i].datetime), "E, MMM d"),
+      icons[`${data.days[i].icon}.svg`],
+      data.days[i].icon,
+      data.days[i].temp,
+      unit,
+    );
   }
 
-  return thisweek;
+  return forecast;
 }
 
-export function processWind(data, unit) {
+export function getWind(data) {
   const wind = new Card("Wind");
 
   wind.addItem(
@@ -150,7 +170,7 @@ export function processHumidity(data) {
     icons["barometer.svg"],
     "pressure",
     data.currentConditions.pressure,
-    "mba",
+    "mb",
   );
 
   humidity.addItem(
@@ -163,5 +183,3 @@ export function processHumidity(data) {
 
   return humidity;
 }
-
-export function processData() {}

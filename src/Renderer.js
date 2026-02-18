@@ -1,21 +1,21 @@
-function renderPage() {
-  /**
-   * calls render timeloc, main, desc, temp, atro, wind, humid, this week
-   */
+export function renderPage(
+  background,
+  main,
+  tempuv,
+  astronomy,
+  wind,
+  humidity,
+  forecast,
+) {
   const maindiv = document.querySelector(".content");
 
+  renderBackground(background);
   maindiv.append(
-    renderDateLocationElement(timeLocation.datetime, timeLocation.location),
-    renderMainElement(
-      weatherMainObject.imgSrc,
-      weatherMainObject.imgAlt,
-      weatherMainObject.temp,
-    ),
-    renderDescElement(desc),
+    renderMainElement(main, main.unit),
     renderCardElement(tempuv, "tempuv", false),
     renderCardElement(astronomy, "astronomy", false),
-    renderCardElement(humidity, "humidity", false),
     renderCardElement(wind, "wind", false),
+    renderCardElement(humidity, "humidity", false),
     renderCardElement(forecast, "forecast", true),
   );
 }
@@ -60,20 +60,13 @@ export function renderCardElement(data, type, isForecast) {
   return card;
 }
 
-export function renderMainElement(
-  date,
-  location,
-  imgSrc,
-  imgAlt,
-  temperature,
-  desc,
-) {
+export function renderMainElement(main, unit) {
   const mainElement = document.createElement("div");
   const mainIconElement = document.createElement("div");
-  const dateLocElement = renderDateLoc(date, location);
-  const iconElement = renderIconElement(imgSrc, imgAlt);
-  const tempElement = renderValueElement(temperature, "&deg;C");
-  const descElement = renderDescElement(desc);
+  const dateLocElement = renderDateLoc(main.datetime, main.location);
+  const iconElement = renderIconElement(main.imgSrc, main.imgAlt);
+  const tempElement = renderValueElement(main.temp, unit);
+  const descElement = renderDescElement(main.desc);
 
   mainElement.classList.add("card", "main");
   mainIconElement.classList.add("main-icon");
