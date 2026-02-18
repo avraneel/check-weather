@@ -9,6 +9,8 @@ function importAll(r) {
   return images;
 }
 
+console.log("I am here");
+
 export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
 );

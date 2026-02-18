@@ -1,4 +1,3 @@
-import { icons } from "./index.js";
 import { fetchData } from "./modules/data/DataFetch.js";
 
 export function renderPage(
@@ -12,6 +11,7 @@ export function renderPage(
 ) {
   const maindiv = document.querySelector(".content");
 
+  maindiv.innerHTML = "";
   renderBackground(background);
   maindiv.append(
     renderSearch(),
@@ -30,6 +30,7 @@ function renderSearch() {
   const searchBtn = document.createElement("button");
   const img = document.createElement("img");
 
+  searchBtn.setAttribute("type", "button");
   searchBar.setAttribute("type", "text");
   searchBox.classList.add("search-box");
   searchBar.classList.add("search-bar");
