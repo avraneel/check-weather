@@ -1,15 +1,5 @@
-import { currentDate } from "./modules/data/CurrentDate.js";
 import "./style.css";
-import { format } from "date-fns";
-import {
-  renderBackground,
-  renderCardElement,
-  renderMainElement,
-  renderPage,
-} from "./Renderer.js";
-import { getMain } from "./modules/data/DataProcessor.js";
 import { fetchData } from "./modules/data/DataFetch.js";
-import { Card } from "./modules/data/Data.js";
 
 function importAll(r) {
   let images = {};
@@ -23,17 +13,19 @@ export const icons = importAll(
   require.context("./assets/images/icons", false, /\.(png|svg|jpg|jpeg|gif)$/i),
 );
 
-const searchBtn = document.querySelector(".search-btn");
-const modal = document.querySelector(".modal");
+// const img = document.createElement("img");
+// img.src = icons["map-search.svg"];
+// img.alt = "search";
 
-const img = document.createElement("img");
-img.src = icons["map-search.svg"];
-img.alt = "search";
+// const searchBtn = document.querySelector(".search-btn");
+// const searchBar = document.querySelector(".search-bar");
 
-searchBtn.append(img);
+// // searchBtn.append(img);
+// searchBtn.textContent = "Search";
 
-async function getCurrentData() {
-  const data = await fetchData("Bangalore", "metric");
-}
+// searchBtn.addEventListener("click", () => {
+//   const location = searchBar.value.trim();
+//   fetchData(location, "metric");
+// });
 
-getCurrentData();
+fetchData("Bangalore", "metric");

@@ -1,3 +1,6 @@
+import { icons } from "./index.js";
+import { fetchData } from "./modules/data/DataFetch.js";
+
 export function renderPage(
   background,
   main,
@@ -11,6 +14,7 @@ export function renderPage(
 
   renderBackground(background);
   maindiv.append(
+    renderSearch(),
     renderMainElement(main, main.unit),
     renderCardElement(tempuv, "tempuv", false),
     renderCardElement(astronomy, "astronomy", false),
@@ -20,9 +24,31 @@ export function renderPage(
   );
 }
 
-export function renderBackground(background) {
+function renderSearch() {
+  const searchBox = document.createElement("form");
+  const searchBar = document.createElement("input");
+  const searchBtn = document.createElement("button");
+  const img = document.createElement("img");
+
+  searchBar.setAttribute("type", "text");
+  searchBox.classList.add("search-box");
+  searchBar.classList.add("search-bar");
+  searchBtn.classList.add("search-btn");
+
+  searchBtn.addEventListener("click", () => {
+    const location = searchBar.value.trim();
+    fetchData(location, "metric");
+  });
+
+  searchBtn.textContent = "Search";
+
+  searchBtn.append(img);
+  searchBox.append(searchBar, searchBtn);
+  return searchBox;
+}
+
+function renderBackground(background) {
   const body = document.querySelector("body");
-  console.log(background);
   switch (background) {
     case "cloudy":
       body.style.background = "linear-gradient(to bottom, #333333, #666666";
@@ -45,7 +71,7 @@ export function renderBackground(background) {
   body.style.backgroundSize = "cover";
 }
 
-export function renderCardElement(data, type, isForecast) {
+function renderCardElement(data, type, isForecast) {
   const card = document.createElement("div");
   const headingElement = renderTextElement(data.title, "h2");
   const itemListElement = renderItemListElement(
@@ -60,7 +86,7 @@ export function renderCardElement(data, type, isForecast) {
   return card;
 }
 
-export function renderMainElement(main, unit) {
+function renderMainElement(main, unit) {
   const mainElement = document.createElement("div");
   const mainIconElement = document.createElement("div");
   const dateLocElement = renderDateLoc(main.datetime, main.location);
