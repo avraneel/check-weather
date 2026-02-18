@@ -1,3 +1,4 @@
+/* CSS Reset */
 *,
 *::before,
 *::after {
@@ -8,6 +9,7 @@
   margin: 0;
 }
 
+/* Set Font */
 @font-face {
   font-family: "Open Sans";
   src:
@@ -20,52 +22,42 @@
 
 body {
   margin: 1rem;
+  height: 100vh;
 }
 
 * {
   font-family: "Open Sans";
 }
 
-/* body {
-  background-image: url(./assets/images/backgrounds/background-partly-cloudy-night.jpg);
-} */
-
 .content {
   display: grid;
   gap: 1em;
   grid-template-columns: repeat(4, minmax(200px, 1fr));
   grid-template-areas:
-    "date-location search x week-weather"
-    "main main tempuv week-weather"
-    "description description tempuv week-weather"
-    "astronomy wind humidity week-weather";
+    "main main search-box forecast"
+    "main main tempuv forecast"
+    "astronomy wind humidity forecast";
 }
 
-.search-btn img {
-  width: 3rem;
+.search-box {
+  grid-area: search-box;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 3fr 1fr;
 }
 
+input[type="text"],
+input[type="text"]:focus,
 .search-btn {
   padding: 2rem;
+  border-radius: 2rem;
   border: none;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 1000px;
   background: rgba(245, 245, 245, 0.15);
   backdrop-filter: blur(2px);
   box-shadow: 0px 0px 2px;
-  text-shadow: #000000 0px 0px 8px;
 }
 
-.current-condition {
-  display: grid;
-  gap: 1em;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-}
-
-.card,
-.current-condition,
-.description {
+.card {
   padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 1rem;
@@ -75,16 +67,9 @@ body {
   text-shadow: #000000 0px 0px 8px;
 }
 
-.date-location {
-  color: #f5f5f5;
-  text-shadow: #000000 0px 0px 8px;
-}
-
 .description {
   font-size: 1rem;
-  padding: 1rem;
   color: #f5f5f5;
-  box-shadow: #000000 0px 0px 2px;
 }
 
 h2 {
@@ -93,13 +78,29 @@ h2 {
 
 .main {
   display: grid;
+  grid-template-areas:
+    "date-location date-location"
+    "main-icon main-temp"
+    "description description";
   gap: 1rem;
   grid-area: main;
+  align-items: center;
 }
 
-.current-condition div {
+.date-location {
+  grid-area: date-location;
   color: #f5f5f5;
-  font-size: 4rem;
+  text-shadow: #000000 0px 0px 8px;
+}
+
+.main-icon {
+  grid-area: main-icon;
+}
+
+.main-temp {
+  grid-area: main-temp;
+  color: #f5f5f5;
+  text-shadow: #000000 0px 0px 8px;
 }
 
 .description {
@@ -126,8 +127,8 @@ h2 {
   grid-area: wind;
 }
 
-.week-weather {
-  grid-area: week-weather;
+.forecast {
+  grid-area: forecast;
 }
 
 .astronomy-items,
@@ -135,7 +136,6 @@ h2 {
   display: grid;
 }
 
-.forecast,
 .item {
   color: #f5f5f5;
   display: grid;

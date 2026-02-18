@@ -1,7 +1,58 @@
-export function renderCardElement(data, type) {
+function renderPage() {
+  /**
+   * calls render timeloc, main, desc, temp, atro, wind, humid, this week
+   */
+  const maindiv = document.querySelector(".content");
+
+  maindiv.append(
+    renderDateLocationElement(timeLocation.datetime, timeLocation.location),
+    renderMainElement(
+      weatherMainObject.imgSrc,
+      weatherMainObject.imgAlt,
+      weatherMainObject.temp,
+    ),
+    renderDescElement(desc),
+    renderCardElement(tempuv, "tempuv", false),
+    renderCardElement(astronomy, "astronomy", false),
+    renderCardElement(humidity, "humidity", false),
+    renderCardElement(wind, "wind", false),
+    renderCardElement(forecast, "forecast", true),
+  );
+}
+
+export function renderBackground(background) {
+  const body = document.querySelector("body");
+  console.log(background);
+  switch (background) {
+    case "cloudy":
+      body.style.background = "linear-gradient(to bottom, #333333, #666666";
+      break;
+    case "partly-cloudy-night":
+      body.style.background = "linear-gradient(to bottom, #383838, #021b36)";
+      break;
+    case "partly-cloudy-day":
+      body.style.background = "linear-gradient(to bottom, #8d8d8d, #0f8ac4)";
+      break;
+    case "clear-night":
+      body.style.background = "linear-gradient(to bottom, #010b25, #021b36";
+      break;
+    case "clear-day":
+      body.style.background = "linear-gradient(to bottom, #2a79c2, #1f99b8)";
+      break;
+  }
+
+  body.style.backgroundRepeat = "no-repeat";
+  body.style.backgroundSize = "cover";
+}
+
+export function renderCardElement(data, type, isForecast) {
   const card = document.createElement("div");
   const headingElement = renderTextElement(data.title, "h2");
-  const itemListElement = renderItemListElement(data.itemList, type);
+  const itemListElement = renderItemListElement(
+    data.itemList,
+    type,
+    isForecast,
+  );
 
   card.classList.add("card", type);
 
@@ -9,18 +60,31 @@ export function renderCardElement(data, type) {
   return card;
 }
 
-export function renderMainElement(imgSrc, imgAlt, temperature) {
+export function renderMainElement(
+  date,
+  location,
+  imgSrc,
+  imgAlt,
+  temperature,
+  desc,
+) {
   const mainElement = document.createElement("div");
+  const mainIconElement = document.createElement("div");
+  const dateLocElement = renderDateLoc(date, location);
   const iconElement = renderIconElement(imgSrc, imgAlt);
-  const tempElement = renderTextElement(temperature, "div");
+  const tempElement = renderValueElement(temperature, "&deg;C");
+  const descElement = renderDescElement(desc);
 
   mainElement.classList.add("card", "main");
+  mainIconElement.classList.add("main-icon");
+  tempElement.classList.add("main-temp");
 
-  mainElement.append(iconElement, tempElement);
+  mainIconElement.append(iconElement);
+  mainElement.append(dateLocElement, mainIconElement, tempElement, descElement);
   return mainElement;
 }
 
-export function renderDateLocationElement(date, location) {
+function renderDateLoc(date, location) {
   const dateLocationElement = document.createElement("div");
   const dateElement = renderTextElement(date, "div");
   const locationElement = renderTextElement(location, "div");
@@ -31,46 +95,53 @@ export function renderDateLocationElement(date, location) {
   return dateLocationElement;
 }
 
-export function renderDescElement(description) {
-  const descElement = renderTextElement(description, "div");
+function renderDescElement(desc) {
+  const descElement = renderTextElement(desc, "div");
   descElement.classList.add("description");
 
   return descElement;
 }
 
-function renderItemListElement(itemList, infoType) {
+function renderItemListElement(itemList, infoType, isForecast) {
   const itemListElement = document.createElement("div");
   itemListElement.classList.add(`${infoType}-items`);
 
   for (const item of itemList) {
-    const itemElement = renderItemElement(item);
+    const itemElement = renderItemElement(item, isForecast);
     itemListElement.append(itemElement);
   }
 
   return itemListElement;
 }
 
-function renderItemElement(item) {
+function renderItemElement(item, isForecast) {
   const itemElement = document.createElement("div");
   const itemNameElement = renderTextElement(item.name, "div");
   const iconElement = renderIconElement(item.iconName, item.alt);
-  const valueElement = renderItemValueElement(item.value, item.unit);
+  const valueElement = renderValueElement(item.value, item.unit);
 
   itemElement.classList.add("item");
 
-  itemElement.append(iconElement, itemNameElement, valueElement);
+  if (isForecast) {
+    itemElement.append(itemNameElement, iconElement, valueElement);
+  } else {
+    itemElement.append(iconElement, itemNameElement, valueElement);
+  }
+
   return itemElement;
 }
 
 function renderIconElement(imgSrc, imgAlt) {
   const iconElement = document.createElement("img");
+  iconElement.classList.add("icon");
+
   iconElement.src = imgSrc;
   iconElement.alt = imgAlt;
 
   return iconElement;
 }
 
-function renderItemValueElement(value, unit) {
+function renderValueElement(value, unit) {
   const valueElement = document.createElement("div");
   valueElement.classList.add("value");
 

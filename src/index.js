@@ -1,8 +1,8 @@
-import { showThisWeek } from "./modules/views/showThisWeek.js";
 import { currentDate } from "./modules/data/CurrentDate.js";
 import "./style.css";
 import { format } from "date-fns";
 import {
+  renderBackground,
   renderCardElement,
   renderDateLocationElement,
   renderDescElement,
@@ -15,8 +15,8 @@ import {
   processTemp,
   processWind,
 } from "./modules/data/DataProcessor.js";
-import { renderBackground } from "./modules/views/renderBackground.js";
 import { fetchData } from "./modules/data/DataFetch.js";
+import { Card } from "./modules/data/Data.js";
 
 function importAll(r) {
   let images = {};
@@ -39,40 +39,24 @@ img.alt = "search";
 
 searchBtn.append(img);
 
-searchBtn.addEventListener("click", () => {
-  modal.showModal();
-});
+// searchBtn.addEventListener("click", () => {
+//   modal.showModal();
+// });
 
 async function getCurrentData() {
   const data = await fetchData("Bangalore", "metric");
 
   console.log(data);
 
-  // const unit = "metric";
-  // const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&elements=add%3Aaqielement%2Cadd%3Aaqieur%2Cadd%3Aaqius%2Cadd%3Aco%2Cadd%3Amoonrise%2Cadd%3Amoonset%2Cadd%3Ano2%2Cadd%3Ao3%2Cadd%3Apm1%2Cadd%3Apm10%2Cadd%3Apm2p5%2Cadd%3Aso2%2Cremove%3AdatetimeEpoch%2Cremove%3Asolarenergy%2Cremove%3Awindgust&key=3SBV58YFMG5PWJYHX7M2NQ396&contentType=json`;
-
-  // const data = await fetch(url).then((response) => response.json());
-
   const weatherMainObject = {
-    datetime: currentDate(
-      `${data.days[0].datetime} ${data.currentConditions.datetime}`,
-    ),
-    location: data.resolvedAddress,
     imgSrc: icons[`${data.currentConditions.icon}.svg`],
     imgAlt: data.currentConditions.icon,
     country: data.resolvedAddress.split(", ").at(-1),
-    temp: `${data.currentConditions.temp} &deg;C`,
-    description: `${data.currentConditions.conditions}. ${data.description}`,
+    temp: `${data.currentConditions.temp}`,
   };
 
   const tempuv = processTemp(data, "&deg;C");
-
-  const tempElement = renderCardElement(tempuv, "tempuv");
-
   const astronomy = processAstronomy(data);
-
-  const astronomyElement = renderCardElement(astronomy, "astronomy");
-  console.log(astronomyElement);
 
   console.log(weatherMainObject);
 
@@ -91,65 +75,44 @@ async function getCurrentData() {
 
   const nextdata = [];
 
+  const forecast = new Card("This Week");
+
   for (let i = 1; i < 8; i++) {
-    const nextDay = {
-      date: format(new Date(data.days[i].datetime), "E, MMM d"),
-      imgSrc: icons[`${data.days[i].icon}.svg`],
-      imgAlt: data.days[i].icon,
-      condition: data.days[i].conditions,
-      temp: data.days[i].temp,
-    };
-    nextdata.push(nextDay);
+    forecast.addItem(
+      format(new Date(data.days[i].datetime), "E, MMM d"),
+      icons[`${data.days[i].icon}.svg`],
+      data.days[i].icon,
+      data.days[i].temp,
+      "&deg;C",
+    );
   }
 
   const humidity = processHumidity(data);
-
-  const humidityElement = renderCardElement(humidity, "humidity");
-
   const wind = processWind(data, "km/h");
 
-  const windElement = renderCardElement(wind, "wind");
-
-  console.log(nextdata);
   console.log(data.currentConditions);
   console.log(data.days[0]);
   renderBackground(data.currentConditions.icon);
 
   const maindiv = document.querySelector(".content");
-  console.log(timeLocation);
-  const dhDiv = renderDateLocationElement(
-    timeLocation.datetime,
-    timeLocation.location,
-  );
-  maindiv.append(dhDiv);
-  const mainElement = renderMainElement(
-    weatherMainObject.imgSrc,
-    weatherMainObject.imgAlt,
-    weatherMainObject.temp,
-  );
-  // const weatherMain = renderCurrentWeather(weatherMainObject);
-  maindiv.append(mainElement);
-  maindiv.append(tempElement);
-  const thisweek = showThisWeek(nextdata);
-  maindiv.appendChild(thisweek);
-  maindiv.append(astronomyElement);
-  maindiv.append(humidityElement);
-  maindiv.append(windElement);
-
-  // Check if night or day
-  const currDate = new Date(
-    `${data.days[0].datetime} ${data.currentConditions.datetime}`,
-  );
-  console.log(currDate);
 
   const weatherDescription = getWeatherDescription(data);
-  const wdElement = renderDescElement(weatherDescription);
-  maindiv.append(wdElement);
-  // const currDate = showDateHeading(dateHeading);
-  // maindiv.appendChild(currDate);
-  // console.log(data.address);
-  // const loc = showAddress(data.address);
-  // maindiv.appendChild(loc);
+
+  maindiv.append(
+    renderMainElement(
+      timeLocation.datetime,
+      timeLocation.location,
+      weatherMainObject.imgSrc,
+      weatherMainObject.imgAlt,
+      weatherMainObject.temp,
+      weatherDescription,
+    ),
+    renderCardElement(tempuv, "tempuv", false),
+    renderCardElement(astronomy, "astronomy", false),
+    renderCardElement(humidity, "humidity", false),
+    renderCardElement(wind, "wind", false),
+    renderCardElement(forecast, "forecast", true),
+  );
 }
 
 getCurrentData();

@@ -6,10 +6,10 @@ export function getWeatherDescription(data) {
   return `${data.currentConditions.conditions}. ${data.description}`;
 }
 
-function processThisWeek(data) {
+function processThisWeek(data, numberDays) {
   const thisweek = [];
 
-  for (let i = 1; i < 8; i++) {
+  for (let i = 1; i < numberDays; i++) {
     const nextDay = {
       date: format(new Date(data.days[i].datetime), "E, MMM d"),
       imgSrc: images[`${data.days[i].icon}.svg`],
@@ -163,3 +163,5 @@ export function processHumidity(data) {
 
   return humidity;
 }
+
+export function processData() {}
