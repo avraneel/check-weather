@@ -16,7 +16,7 @@ const usUnits = {
 
 const metricUnits = {
   temp: "&deg;C",
-  temp: "km/h",
+  speed: "km/h",
 };
 
 export async function fetchData(location, unit) {
@@ -34,7 +34,7 @@ export async function fetchData(location, unit) {
   let wind = {};
   let forecast = {};
 
-  const days = 8;
+  const days = 12;
 
   if (unit === "us") {
     main = getMain(data, usUnits.temp);
