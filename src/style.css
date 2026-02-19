@@ -1,4 +1,4 @@
-/* CSS Reset */
+/* -- CSS Reset -------------------------------------------------------*/
 *,
 *::before,
 *::after {
@@ -8,8 +8,9 @@
 *:not(dialog) {
   margin: 0;
 }
+/* ------------------------------------------------------------------- */
 
-/* Set Font */
+/* -- Set Font ------------------------------------------------------- */
 @font-face {
   font-family: "Open Sans";
   src:
@@ -19,6 +20,7 @@
   font-style: normal;
   font-display: swap;
 }
+/* ------------------------------------------------------------------ */
 
 body {
   margin: 1rem;
@@ -34,36 +36,45 @@ body {
   gap: 1em;
   grid-template-columns: repeat(4, minmax(200px, 1fr));
   grid-template-areas:
-    "main main search-box forecast"
+    "main main input forecast"
     "main main tempuv forecast"
     "astronomy wind humidity forecast";
 }
 
+.input {
+  grid-area: input;
+}
+
+fieldset {
+  border-radius: 1rem;
+}
+
+.search-btn {
+  color: #f5f5f5;
+}
+
+input[type="text"],
+input[type="text"]:focus {
+  color: #f5f5f5;
+}
+
 .search-box {
-  grid-area: search-box;
   display: grid;
   gap: 1rem;
   grid-template-columns: 3fr 1fr;
 }
 
+.card,
+fieldset,
+.search-btn,
 input[type="text"],
-input[type="text"]:focus,
-.search-btn {
-  padding: 2rem;
-  border-radius: 2rem;
-  border: none;
-  background: rgba(245, 245, 245, 0.15);
-  backdrop-filter: blur(2px);
-  box-shadow: 0px 0px 2px;
-}
-
-.card {
+input[type="text"]:focus {
   padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 1rem;
   background: rgba(245, 245, 245, 0.15);
   backdrop-filter: blur(2px);
-  box-shadow: 0px 0px 2px;
+  box-shadow: #000000 0px 0px 2px;
   text-shadow: #000000 0px 0px 8px;
 }
 
@@ -91,6 +102,16 @@ h2 {
   grid-area: date-location;
   color: #f5f5f5;
   text-shadow: #000000 0px 0px 8px;
+}
+
+.input {
+  display: grid;
+  gap: 1rem;
+}
+
+legend,
+label {
+  color: #f5f5f5;
 }
 
 .main-icon {

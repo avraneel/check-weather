@@ -25,27 +25,72 @@ export function renderPage(
 }
 
 function renderSearch() {
-  const searchBox = document.createElement("form");
+  const form = document.createElement("form");
+  const searchBox = document.createElement("div");
   const searchBar = document.createElement("input");
   const searchBtn = document.createElement("button");
+  const unitBox = renderRadio();
+
   const img = document.createElement("img");
+  searchBar.required = true;
 
   searchBtn.setAttribute("type", "button");
   searchBar.setAttribute("type", "text");
+  form.classList.add("input");
   searchBox.classList.add("search-box");
   searchBar.classList.add("search-bar");
   searchBtn.classList.add("search-btn");
 
   searchBtn.addEventListener("click", () => {
     const location = searchBar.value.trim();
-    fetchData(location, "metric");
+    if (!location) {
+      alert("Please give a valid value!");
+    } else {
+      const unit = document.querySelector('input[name="unit"]:checked').value;
+      console.log(unit);
+      fetchData(location, unit);
+    }
   });
 
   searchBtn.textContent = "Search";
 
   searchBtn.append(img);
   searchBox.append(searchBar, searchBtn);
-  return searchBox;
+  form.append(searchBox, unitBox);
+  return form;
+}
+
+function renderRadio() {
+  const unitBox = document.createElement("fieldset");
+  const legend = document.createElement("legend");
+  const usBox = document.createElement("div");
+  const metBox = document.createElement("div");
+  const usRadio = document.createElement("input");
+  const usLabel = document.createElement("label");
+  const metRadio = document.createElement("input");
+  const metLabel = document.createElement("label");
+
+  usRadio.setAttribute("type", "radio");
+  usRadio.setAttribute("id", "us-unit");
+  usRadio.setAttribute("name", "unit");
+  usRadio.setAttribute("value", "us");
+  metRadio.setAttribute("type", "radio");
+  metRadio.setAttribute("id", "met-unit");
+  metRadio.setAttribute("name", "unit");
+  metRadio.setAttribute("value", "metric");
+  metRadio.setAttribute("for", "us-unit");
+  metLabel.setAttribute("for", "met-unit");
+  metRadio.checked = true;
+
+  usLabel.textContent = " US";
+  metLabel.textContent = " Metric";
+  legend.textContent = "Unit";
+
+  usBox.append(usRadio, usLabel);
+  metBox.append(metRadio, metLabel);
+
+  unitBox.append(legend, usBox, metBox);
+  return unitBox;
 }
 
 function renderBackground(background) {

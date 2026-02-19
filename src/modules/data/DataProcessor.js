@@ -42,7 +42,7 @@ export function getForecast(data, unit, numberDays) {
   return forecast;
 }
 
-export function getWind(data) {
+export function getWind(data, unit) {
   const wind = new Card("Wind");
 
   wind.addItem(
@@ -50,7 +50,7 @@ export function getWind(data) {
     icons["windsock.svg"],
     "wind-speed",
     data.currentConditions.windspeed,
-    "km/h",
+    unit,
   );
 
   wind.addItem(
@@ -119,14 +119,14 @@ export function processTemp(data, unit) {
     icons["thermometer-high.svg"],
     "tempmax",
     data.days[0].tempmax,
-    "&deg;C",
+    unit,
   );
   tempuv.addItem(
     "Min",
     icons["thermometer-low.svg"],
     "tempmin",
     data.days[0].tempmin,
-    "&deg;C",
+    unit,
   );
   tempuv.addItem(
     "AQI",
