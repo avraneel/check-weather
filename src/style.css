@@ -120,6 +120,7 @@ label {
 
 .main-temp {
   grid-area: main-temp;
+  font-size: 4rem;
   color: #f5f5f5;
   text-shadow: #000000 0px 0px 8px;
 }
